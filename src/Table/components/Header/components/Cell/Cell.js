@@ -3,6 +3,8 @@ import React, { useEffect, useState } from 'react';
 import classNames from 'classnames';
 import TextareaAutosize from 'react-textarea-autosize';
 
+import IconRemovePlus from '../../../IconRemove/IconRemovePlus';
+
 const Cell = ({
   index,
   minColumnSize,
@@ -61,7 +63,7 @@ const Cell = ({
             className={classNames(classes.deleteButton, detectClass('deleteButton'))}
             onClick={() => deleteColumn(index)}
           >
-            &#x2715;
+            <IconRemovePlus />
           </button>
         )
       }

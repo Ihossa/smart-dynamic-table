@@ -4,8 +4,10 @@ import PropTypes from "prop-types";
 import Cell from './components/Cell';
 import classes from './Header.module.scss';
 
+import IconPlus from '../IconPlus/IconPlus'
+
 const Header = ({ 
-  tableHeaders, checkUniqueColumn, detectClass, onHeaderEdit, minColumnSize, deleteColumn 
+  tableHeaders, checkUniqueColumn, detectClass, onHeaderEdit, minColumnSize, deleteColumn, addColumn
 }) => {
   const [selectedHeader, setSelectedHeader] = useState(-1);
 
@@ -33,6 +35,16 @@ const Header = ({
             )
           })
         }
+        <td
+          className={classNames(classes.addColumn, detectClass('addColumn'))}>
+          <button 
+            type="button" 
+            onClick={() => addColumn()} 
+            className={classNames(classes.addColumnButton, detectClass('addColumnButton'))}
+          >
+            <IconPlus />
+          </button>
+        </td>
       </tr>
     </thead>
   )

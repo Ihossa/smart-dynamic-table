@@ -8,14 +8,14 @@
   width: 100%;
   position: relative;
   overflow-x: auto;
-  border: 1px solid grey;
-  scroll-behaviour: smooth;
+  border: none;
 }
 
 .table {
   width: 100%;
   padding-top: 20px;
   border-collapse: collapse;
+  border: none;
 }
 
 .addButton {
@@ -42,8 +42,27 @@
 }
 
 .sendButton {
-  outline: none;
+  margin: 15px 25px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px 20px;
+  width: 200px;
   height: 40px;
-  margin-top: 10px;
-  border: 1px solid grey;
+  background: #2684FF;
+  border-radius: 8px;
+  border:none;
+  font-size: 16px;
+  line-height: 19px;
+  color: #F6FAFB;
+  &:hover{
+    background: #1D70DE;
+  }
+  &:active{
+    background: #2684FF;
+  }
+}
+
+.arrowIcon{
+  margin: 10px;
 }

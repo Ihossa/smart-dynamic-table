@@ -8,6 +8,11 @@ import classes from './Table.module.scss';
 import Header from './components/Header';
 import Body from './components/Body';
 import Modal from './components/Modal';
+import MoalRemove from './components/ModalRemove';
+
+import IconPrev from './components/IconPrev/IconPrev';
+import IconNext from './components/IconNext/IconNext';
+import arrow from './assets/arrow.svg'
 
 import { getInitialProps } from './utils';
 
@@ -29,6 +34,9 @@ const Table = ({
   const [activeHeaderValue, setActiveHeaderValue] = useState('');
   const [activeHeaderIndex, setActiveHeaderIndex] = useState(0);
   const [scroll, setScroll] = useState(0);
+  const [isVisibleModalRemove, setIsVisibleModalRemove] = useState(false);
+  const [indexElementRemove, setIndexElementRemove] = useState(null);
+  const [nameElementRemove, setNameElementRemove] = useState('')
 
   const tableRef = useRef(null);
   const wrapperRef = useRef(null);
@@ -107,6 +115,11 @@ const Table = ({
   };
 
   const deleteColumn = (index) => {
+    setIsVisibleModalRemove(true)
+    setIndexElementRemove(index);
+    setNameElementRemove('column')
+  }
+  const confirmDeleteColumn = (index) => {
     const activeHeaderTitle = tableHeaders[index];
     const newTableData = JSON.parse(JSON.stringify(tableData));
     newTableData.forEach(item => {
@@ -119,6 +132,12 @@ const Table = ({
   }
 
   const deleteRow = (index) => {
+    setIsVisibleModalRemove(true)
+    setIndexElementRemove(index);
+    setNameElementRemove('row')
+  }
+
+  const confirmDeleteRow = (index) => {
     const newTableData = [...tableData.slice(0, index), ...tableData.slice(index + 1)];
     setTableData(newTableData);
   }
@@ -127,15 +146,20 @@ const Table = ({
     return tableClasses[key] || '';
   }
 
+  const onCancel = () => {
+    setIsVisibleModalRemove(false)
+  }
+  const onConfirm = () => {
+    if(nameElementRemove === 'column'){
+      confirmDeleteColumn(indexElementRemove)
+    } else {
+      confirmDeleteRow(indexElementRemove)
+    }
+    setIsVisibleModalRemove(false)
+  }
+
   return (
     <div className={classNames(classes.container, detectClass('container'))}>
-      <button 
-        type="button" 
-        onClick={addColumn} 
-        className={classNames(classes.addButton, detectClass('addColumnButton'))}
-      >
-          +
-      </button>
       <div className={classes.wrapper} ref={wrapperRef}>
         <table 
           className={classNames(classes.table, detectClass('table'))} 
@@ -160,16 +184,10 @@ const Table = ({
             onCeilBlur={onCeilBlur}
             minColumnSize={minColumnSize}
             deleteRow={deleteRow}
+            addRow={addRow}
           />
         </table>
       </div>
-      <button 
-        className={classNames(classes.addRowButton, detectClass('addRowButton'))}
-        onClick={addRow}
-        type="button"
-      >
-        Add row
-      </button>
       {
         isModalVisible && (
           <Modal 
@@ -181,13 +199,22 @@ const Table = ({
           />
         )
       }
-      <button 
-        type='button' 
-        onClick={sendData}
-        className={classNames(classes.sendButton, detectClass('sendButton'))}
-      >
-        Send data to user
-      </button>
+      <div className={classNames(classes.footer, detectClass('footer'))}>
+        <button 
+          type='button' 
+          onClick={sendData}
+          className={classNames(classes.sendButton, detectClass('sendButton'))}
+        >
+          Send data to user
+          <img className={classNames(classes.arrowIcon, detectClass('arrowIcon'))} src = {arrow} alt="arrow" />
+        </button>
+      </div>
+      {isVisibleModalRemove && <MoalRemove
+        tableElementName = {nameElementRemove}
+        onConfirm = {onConfirm}
+        onCancel = {onCancel}
+        detectClass={detectClass}
+      />}
     </div>
   )
 }

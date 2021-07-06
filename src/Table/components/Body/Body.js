@@ -6,9 +6,12 @@ import PropTypes from "prop-types";
 import classNames from 'classnames';
 import classes from './Body.module.scss';
 
+import Plus from '../IconPlus/IconPlus'
+import RemoveIcon from '../IconRemove/IconRemovePlus'
+
 const Body = ({ 
   tableData, tableHeaders, emptyCellPlaceholder, editCeil, detectClass,
-  onCeilBlur, minColumnSize, deleteRow
+  onCeilBlur, minColumnSize, deleteRow, addRow
 }) => {
   const [selectedRow, setSelectedRow] = useState(-1);
 
@@ -49,14 +52,31 @@ const Body = ({
                     className={classNames(classes.deleteRowButton, detectClass('deleteRowButton'))}
                     onClick={() => deleteRow(i)}
                   >
-                    &#x2715;
+                    <RemoveIcon />
                   </button>
                 )
               }
+              <td className={classNames(classes.lastCell, detectClass('lastCell'))}></td>
             </tr>
           )
         })
       }
+      <tr>
+        <td className={classNames(classes.lastRow, detectClass('lastRow'))}>
+          <button 
+            className={classNames(classes.addRowButton, detectClass('addRowButton'))}
+            onClick={() => addRow()}
+            type="button"
+          >
+            <Plus />
+          </button>
+        </td>
+        {
+          tableHeaders.map((header, j) => {
+            return (<td key={j} className={classNames(classes.lastRow, detectClass('lastRow'))}></td>)
+          })
+        }
+      </tr>
     </tbody>
   )
 }
